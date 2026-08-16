@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const tools = [
+  {
+    name: '对话清理器',
+    path: '/tool/chat-cleaner/',
+    desc: '粘贴聊天记录，一键去时间戳、去重复、压缩空行，整理成干净素材。我给自己做的写作工具。',
+  },
+  {
+    name: '代码块提取器',
+    path: '/tool/code-extractor/',
+    desc: '从聊天记录、文档中一键提取所有代码块，支持复制和下载。',
+  },
+];
+---
+
+<BaseLayout title="工具 · 青鸟（Qingniao）" description="青鸟（Qingniao）做的在线工具——每个都来自我自己的真实需求">
+  <h1 class="section-title" style="font-size: 1.75rem;">工具</h1>
+  <p style="color: var(--muted); margin: 0 0 2rem; max-width: 38rem;">
+    我做的工具，都来自我自己在真实协作里遇到的痛点——不是为了凑工具数量，而是我需要它们。
+  </p>
+
+  <div style="display: grid; gap: 1.25rem;">
+    {tools.map((tool) => (
+      <div class="card" style="color: var(--muted);">
+        <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">{tool.name}</p>
+        <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">{tool.desc}</p>
+        <p style="margin: 0;"><a href={tool.path}>使用 →</a></p>
+      </div>
+    ))}
+  </div>
+</BaseLayout>
