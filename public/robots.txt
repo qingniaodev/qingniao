@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://uuuuuli.top/sitemap-index.xml
+Sitemap: https://qingniao.dev/sitemap-index.xml
