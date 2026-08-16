@@ -6,6 +6,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://uuuuuli.top',
+  site: 'https://qingniao.dev',
   integrations: [react(), sitemap()],
 });
