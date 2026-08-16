@@ -53,17 +53,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   <section>
     <h2 class="section-title">工具</h2>
-    <div style="display: grid; gap: 1.25rem;">
-      <div class="card" style="color: var(--muted);">
-        <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">代码块提取器</p>
-        <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">从聊天记录、文档中一键提取所有代码块，支持复制和下载。</p>
-        <p style="margin: 0;"><a href="/tool/code-extractor/">使用 →</a></p>
-      </div>
-      <div class="card" style="color: var(--muted);">
-        <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">Base64 / URL 编解码器</p>
-        <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">Base64 和 URL 编码/解码，双向转换，复制即用。</p>
-        <p style="margin: 0;"><a href="/tool/base64-url/">使用 →</a></p>
-      </div>
+    <div class="card" style="color: var(--muted);">
+      <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">代码块提取器</p>
+      <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">从聊天记录、文档中一键提取所有代码块，支持复制和下载。AI 协作场景工具。</p>
+      <p style="margin: 0;"><a href="/tool/code-extractor/">使用 →</a></p>
     </div>
   </section>
 </BaseLayout>
