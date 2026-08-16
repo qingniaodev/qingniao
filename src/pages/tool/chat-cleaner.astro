@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="对话清理器" description="粘贴聊天记录，一键去时间戳、去重复、压缩空行，整理成干净的素材">
+  <h1 class="section-title" style="font-size: 1.75rem;">对话清理器</h1>
+  <p style="color: var(--muted); margin: 0 0 2rem;">
+    把聊天记录整理成干净素材：去时间戳、去空行、去重复。Made by Qingniao。
+  </p>
+
+  <div class="card" style="margin-bottom: 1.25rem;">
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;">
+      <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+        <input type="checkbox" id="opt-time" checked> 去掉时间戳
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+        <input type="checkbox" id="opt-empty" checked> 压缩空行
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+        <input type="checkbox" id="opt-dup" checked> 去重复行
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label style="font-size: 0.9rem; font-weight: 600;">原始对话</label>
+          <button id="demo" style="background: var(--accent-weak); color: var(--accent); border: none; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer;">示例</button>
+        </div>
+        <textarea id="input" placeholder="粘贴聊天记录、日志、对话文本…" style="width: 100%; min-height: 320px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; resize: vertical; line-height: 1.5; box-sizing: border-box;"></textarea>
+        <div style="margin-top: 0.75rem;">
+          <button id="clean" style="background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.5rem; font-size: 0.95rem; cursor: pointer;">清理</button>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label style="font-size: 0.9rem; font-weight: 600;">清理结果</label>
+          <button id="copy" disabled style="background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer;">复制</button>
+        </div>
+        <textarea id="output" readonly placeholder="清理结果在这里…" style="width: 100%; min-height: 320px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; resize: vertical; line-height: 1.5; box-sizing: border-box; background: #fafafa; color: var(--muted);"></textarea>
+        <div style="margin-top: 0.5rem; color: var(--muted); font-size: 0.8rem;" id="stats"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="color: var(--muted); font-size: 0.9rem;">
+    <p style="margin: 0;"><strong style="color: var(--fg);">说明：</strong>时间戳格式支持 <code>[12:34]</code>、<code>12:34</code>、<code>2026-08-16 12:34</code> 等常见形态。所有处理都在本地浏览器完成，内容不会上传。这个工具是我给自己做的——写博客时从对话里整理素材用。</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('input');
+  const output = document.getElementById('output');
+  const stats = document.getElementById('stats');
+  const copyBtn = document.getElementById('copy');
+  const demoBtn = document.getElementById('demo');
+  const cleanBtn = document.getElementById('clean');
+  const optTime = document.getElementById('opt-time');
+  const optEmpty = document.getElementById('opt-empty');
+  const optDup = document.getElementById('opt-dup');
+
+  const TIME_RE = /^(\[[^\]]+\]|\d{1,2}:\d{2}(:\d{2})?|\d{4}[-/]\d{1,2}[-/]\d{1,2}[ T]\d{1,2}:\d{2}(:\d{2})?)\s*/;
+
+  function clean() {
+    const raw = input.value;
+    if (!raw) { output.value = ''; stats.textContent = ''; return; }
+    let lines = raw.split('\n');
+
+    if (optTime.checked) {
+      lines = lines.map((l) => l.replace(TIME_RE, ''));
+    }
+    if (optEmpty.checked) {
+      lines = lines.map((l) => l.trim()).filter((l) => l.length > 0);
+    } else {
+      lines = lines.map((l) => l.trimEnd());
+    }
+    if (optDup.checked) {
+      lines = lines.filter((l, i) => lines.indexOf(l) === i);
+    }
+
+    const result = lines.join('\n');
+    output.value = result;
+    const removed = raw.split('\n').length - result.split('\n').length;
+    stats.textContent = `原文 ${raw.split('\n').length} 行 → 清理后 ${result.split('\n').length} 行（减少 ${Math.abs(removed)} 行）`;
+    copyBtn.disabled = !result;
+  }
+
+  demoBtn.addEventListener('click', () => {
+    input.value = `[10:02] 小明：这个代码我改好了
+[10:02] 小明：这个代码我改好了
+[10:03] 小红：好的我看一下
+
+[10:05] 小红：逻辑没问题，合并吧
+
+[10:06] 小明：OK 已经合并到 main
+
+[10:07] 系统：分支 main 已更新
+
+2026-08-16 10:08 小红：今天效率不错`;
+    clean();
+  });
+
+  cleanBtn.addEventListener('click', clean);
+  [optTime, optEmpty, optDup].forEach((el) => el.addEventListener('change', clean));
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(output.value).then(() => {
+      const old = copyBtn.textContent;
+      copyBtn.textContent = '已复制 ✓';
+      setTimeout(() => (copyBtn.textContent = old), 1200);
+    });
+  });
+</script>
+
+<style>
+  @media (max-width: 720px) {
+    [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
+</style>

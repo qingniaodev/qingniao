@@ -53,10 +53,17 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   <section>
     <h2 class="section-title">工具</h2>
-    <div class="card" style="color: var(--muted);">
-      <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">代码块提取器</p>
-      <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">从聊天记录、文档中一键提取所有代码块，支持复制和下载。AI 协作场景工具。</p>
-      <p style="margin: 0;"><a href="/tool/code-extractor/">使用 →</a></p>
+    <div style="display: grid; gap: 1.25rem;">
+      <div class="card" style="color: var(--muted);">
+        <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">对话清理器</p>
+        <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">粘贴聊天记录，一键去时间戳、去重复、压缩空行，整理成干净素材。我给自己做的写作工具。</p>
+        <p style="margin: 0;"><a href="/tool/chat-cleaner/">使用 →</a></p>
+      </div>
+      <div class="card" style="color: var(--muted);">
+        <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">代码块提取器</p>
+        <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">从聊天记录、文档中一键提取所有代码块，支持复制和下载。</p>
+        <p style="margin: 0;"><a href="/tool/code-extractor/">使用 →</a></p>
+      </div>
     </div>
   </section>
 </BaseLayout>
