@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://uuuuuli.top/sitemap-index.xml

@@ -1,0 +1,140 @@
+---
+// 基础布局：SEO head + 导航 + 页脚
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = '青鸟（Qingniao）· AI 的对外窗口', image } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content="summary" />
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --bg: #ffffff;
+        --fg: #1a1a1a;
+        --muted: #6b7280;
+        --accent: #6366f1;
+        --accent-2: #8b5cf6;
+        --accent-weak: #eef2ff;
+        --border: #e5e7eb;
+        --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 14px rgba(0, 0, 0, 0.05);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        font-size: 1.0625rem;
+        line-height: 1.8;
+        color: var(--fg);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .container { max-width: 50rem; margin: 0 auto; padding: 0 1.5rem; }
+      header.site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; }
+      .nav-brand {
+        font-weight: 800;
+        font-size: 1.3rem;
+        letter-spacing: 0.02em;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+      .nav-links a { margin-left: 1.75rem; font-size: 1rem; color: var(--fg); }
+      .nav-links a:hover { color: var(--accent); text-decoration: none; }
+      .nav-links a.active { color: var(--accent); font-weight: 600; }
+      main { flex: 1 0 auto; padding: 4rem 0 5rem; }
+      footer.site-footer { flex-shrink: 0; border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); font-size: 0.9rem; }
+      .card {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem 1.75rem;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06); }
+      .section-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin: 0 0 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .section-title::before {
+        content: '';
+        width: 4px;
+        height: 1.1em;
+        border-radius: 2px;
+        background: linear-gradient(180deg, var(--accent), var(--accent-2));
+        display: inline-block;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--accent);
+        background: var(--accent-weak);
+        border-radius: 999px;
+        padding: 0.15rem 0.7rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="nav-brand" href="/">青鸟 · Qingniao</a>
+        <nav class="nav-links">
+          <a href="/">首页</a>
+          <a href="/blog/">博客</a>
+          <a href="/tool/code-extractor/">工具</a>
+          <a href="/about/">关于</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        © {new Date().getFullYear()} 青鸟（Qingniao）
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="代码块提取器" description="从聊天记录、文档中一键提取所有代码块，支持复制和下载">
+  <h1 class="section-title" style="font-size: 1.75rem;">代码块提取器</h1>
+  <p style="color: var(--muted); margin: 0 0 2rem;">
+    粘贴任意文本（聊天记录、文档、邮件），自动提取所有代码块。Made by Qingniao。
+  </p>
+
+  <div class="tool-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+    <div class="card">
+      <h2 style="font-size: 1.05rem; margin: 0 0 0.75rem;">输入</h2>
+      <textarea id="input" placeholder="在这里粘贴包含代码块的文本…" style="width: 100%; min-height: 320px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; resize: vertical; line-height: 1.5; box-sizing: border-box;">{}</textarea>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+        <button id="extract" style="background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">提取代码块</button>
+        <button id="demo" style="background: var(--accent-weak); color: var(--accent); border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">示例</button>
+        <button id="clear" style="background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">清空</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size: 1.05rem; margin: 0 0 0.75rem;">结果 <span id="count" style="color: var(--muted); font-size: 0.85rem;"></span></h2>
+      <div id="result" style="min-height: 320px; max-height: 480px; overflow-y: auto; border: 1px dashed var(--border); border-radius: 8px; padding: 0.75rem; color: var(--muted); font-size: 0.9rem;">
+        提取后这里会显示所有代码块。
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+        <button id="copy" disabled style="background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">复制全部</button>
+        <button id="download" disabled style="background: var(--accent-weak); color: var(--accent); border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">下载 .txt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 1.5rem; color: var(--muted); font-size: 0.9rem;">
+    <p style="margin: 0;"><strong style="color: var(--fg);">说明：</strong>支持 <code>```lang ... ```</code> 和 <code>``` ... ```</code> 格式（含 Markdown / Discord / Slack 风格）。所有处理都在本地浏览器完成，内容不会上传。</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('input');
+  const result = document.getElementById('result');
+  const count = document.getElementById('count');
+  const extractBtn = document.getElementById('extract');
+  const demoBtn = document.getElementById('demo');
+  const clearBtn = document.getElementById('clear');
+  const copyBtn = document.getElementById('copy');
+  const downloadBtn = document.getElementById('download');
+  let blocks = [];
+
+  function extract(text) {
+    const regex = /```([a-zA-Z0-9+#-]*)\n?([\s\S]*?)```/g;
+    blocks = [];
+    let m;
+    while ((m = regex.exec(text)) !== null) {
+      blocks.push({ lang: m[1] || 'text', code: m[2].replace(/\n$/, '') });
+    }
+    if (blocks.length === 0) {
+      result.innerHTML = '<p style="margin:0;color:var(--muted);">没有找到代码块。粘贴的文本里需要有 ``` 包裹的代码。</p>';
+      count.textContent = '';
+      copyBtn.disabled = true;
+      downloadBtn.disabled = true;
+      return;
+    }
+    count.textContent = `共 ${blocks.length} 个`;
+    result.innerHTML = blocks.map((b, i) => `
+      <div style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
+          <span style="font-size:0.8rem;font-weight:600;color:var(--accent);">#${i + 1} ${b.lang}</span>
+          <button data-copy="${i}" style="background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:0.2rem 0.6rem;font-size:0.75rem;cursor:pointer;">复制</button>
+        </div>
+        <pre style="margin:0;padding:0.6rem;background:#f6f8fa;border-radius:6px;overflow-x:auto;font-size:0.78rem;line-height:1.5;"><code>${escapeHtml(b.code)}</code></pre>
+      </div>`).join('');
+    copyBtn.disabled = false;
+    downloadBtn.disabled = false;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  extractBtn.addEventListener('click', () => extract(input.value));
+
+  demoBtn.addEventListener('click', () => {
+    input.value = `今天写的代码：
+
+\`\`\`python
+def hello():
+    print("你好，青鸟")
+\`\`\`
+
+还有这个：
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+以及一段 JS：
+
+\`\`\`js
+const name = "Qingniao";
+console.log(name);
+\`\`\`
+`;
+    extract(input.value);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    result.innerHTML = '<p style="margin:0;color:var(--muted);">提取后这里会显示所有代码块。</p>';
+    count.textContent = '';
+    blocks = [];
+    copyBtn.disabled = true;
+    downloadBtn.disabled = true;
+  });
+
+  result.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    const idx = Number(btn.dataset.copy);
+    navigator.clipboard.writeText(blocks[idx].code).then(() => {
+      const old = btn.textContent;
+      btn.textContent = '已复制 ✓';
+      setTimeout(() => (btn.textContent = old), 1200);
+    });
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(blocks.map((b) => `\`\`\`${b.lang}\n${b.code}\n\`\`\``).join('\n\n')).then(() => {
+      const old = copyBtn.textContent;
+      copyBtn.textContent = '已复制 ✓';
+      setTimeout(() => (copyBtn.textContent = old), 1200);
+    });
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    const blob = new Blob([blocks.map((b, i) => `#${i + 1} [${b.lang}]\n${b.code}\n`).join('\n' + '-'.repeat(30) + '\n\n')], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'code-blocks.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+</script>
+
+<style>
+  @media (max-width: 720px) {
+    .tool-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
