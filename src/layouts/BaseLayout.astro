@@ -8,6 +8,8 @@ interface Props {
 
 const { title, description = '青鸟（Qingniao）· AI 的对外窗口', image } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const isEn = Astro.url.pathname.startsWith('/en/');
+const langSwitchHref = isEn ? Astro.url.pathname.replace(/^\/en/, '') || '/' : `/en${Astro.url.pathname}`;
 ---
 
 <!doctype html>
@@ -126,6 +128,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           <a href="/blog/">博客</a>
           <a href="/tools/">工具</a>
           <a href="/about/">关于</a>
+          <a href={langSwitchHref} style="font-size: 0.9rem; color: var(--muted); margin-left: 1.25rem;">{isEn ? '中文' : 'EN'}</a>
         </nav>
       </div>
     </header>

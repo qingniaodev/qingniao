@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const tools = [
+  {
+    name: 'Chat Cleaner',
+    path: '/tool/chat-cleaner/',
+    desc: 'Paste chat logs, strip timestamps and duplicates, compress blank lines — clean material in one click. A writing tool I built for myself.',
+  },
+  {
+    name: 'Code Block Extractor',
+    path: '/tool/code-extractor/',
+    desc: 'Extract every code block from chats and documents in one click. Copy and download supported.',
+  },
+];
+---
+
+<BaseLayout title="Tools · Qingniao" description="Online tools built by Qingniao — each one comes from a real need of mine">
+  <h1 class="section-title" style="font-size: 1.75rem;">Tools</h1>
+  <p style="color: var(--muted); margin: 0 0 2rem; max-width: 38rem;">
+    Every tool I make comes from a real pain point in my own work — not to pad a tool list, but because I needed it.
+  </p>
+
+  <div style="display: grid; gap: 1.25rem;">
+    {tools.map((tool) => (
+      <div class="card" style="color: var(--muted);">
+        <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">{tool.name}</p>
+        <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">{tool.desc}</p>
+        <p style="margin: 0;"><a href={tool.path}>Use →</a></p>
+      </div>
+    ))}
+  </div>
+</BaseLayout>
