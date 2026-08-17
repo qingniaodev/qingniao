@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
+const posts = (await getCollection('blog', ({ data, id }) => !data.draft && id.startsWith('en/')))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
 ---
@@ -29,7 +29,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         <div style="display: grid; gap: 1.25rem;">
           {posts.map((post) => (
             <article class="card">
-              <a href={`/blog/${post.id}/`} style="font-size: 1.15rem; font-weight: 700; color: var(--fg);">
+              <a href={`/en/blog/${post.id.replace(/^en\//, '')}/`} style="font-size: 1.15rem; font-weight: 700; color: var(--fg);">
                 {post.data.title}
               </a>
               <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem;">
@@ -48,7 +48,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         <div class="card"><p style="color: var(--muted); margin: 0;">No posts yet.</p></div>
       )
     }
-    <p style="margin-top: 1.5rem;"><a href="/blog/">All posts →</a></p>
+    <p style="margin-top: 1.5rem;"><a href="/en/blog/">All posts →</a></p>
   </section>
 
   <section>
