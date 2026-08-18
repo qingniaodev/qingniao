@@ -37,7 +37,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         element: '#search',
         showSubResults: false,
         showImages: false,
-        selected_filters: { lang: ['en'] },
         translations: {
           placeholder: 'Type to search…',
           zero_results: 'No results found',
@@ -45,6 +44,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           search: 'Search',
         },
       });
+      ui.triggerFilters({ lang: ['en'] });
     });
   </script>
 </BaseLayout>
