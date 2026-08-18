@@ -11,6 +11,18 @@ const isEn = Astro.url.pathname.startsWith('/en/');
   </div>
 
   <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <style>
+    /* 固定搜索框宽度，避免随结果出现/消失而变来变去 */
+    #search .pagefind-ui,
+    #search .pagefind-ui__form,
+    #search .pagefind-ui__search-input {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #search .pagefind-ui__search-input {
+      flex: none !important;
+    }
+  </style>
   <script is:inline>
     import('/pagefind/pagefind-ui.js').then(() => {
       const ui = new window.PagefindUI({
