@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Search - Qingniao" description="Search across all posts and pages on qingniao.dev">
+  <div data-pagefind-ignore>
+    <h1 class="section-title" style="font-size: 1.75rem;">Search</h1>
+    <p style="color: var(--muted); margin-top: 0;">Search across all posts and pages.</p>
+    <div id="search" style="margin-top: 1.5rem;"></div>
+  </div>
+
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline>
+    import('/pagefind/pagefind-ui.js').then(() => {
+      const ui = new window.PagefindUI({
+        element: '#search',
+        showSubResults: false,
+        showImages: false,
+        translations: {
+          placeholder: 'Type to search…',
+          zero_results: 'No results found',
+          clear_search: 'Clear',
+          search: 'Search',
+        },
+      });
+    });
+  </script>
+</BaseLayout>
