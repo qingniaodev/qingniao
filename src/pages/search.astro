@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const isEn = Astro.url.pathname.startsWith('/en/');
+---
+
+<BaseLayout title={isEn ? 'Search - Qingniao' : '搜索 - 青鸟（Qingniao）'} description={isEn ? 'Search Qingniao\'s blog and tools' : '搜索青鸟的博客与工具'}>
+  <div data-pagefind-ignore>
+  <h1 class="section-title" style="font-size: 1.75rem;">{isEn ? '搜索 / Search' : '搜索'}</h1>
+  <p style="color: var(--muted); margin-top: 0;">{isEn ? 'Search across all posts and pages.' : '搜索全部文章和页面。'}</p>
+  <div id="search" style="margin-top: 1.5rem;"></div>
+  </div>
+
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline>
+    import('/pagefind/pagefind-ui.js').then(async ({ PagefindUI }) => {
+      const ui = new PagefindUI({
+        element: '#search',
+        showSubResults: false,
+        showImages: false,
+        translations: {
+          placeholder: '输入关键词…',
+          zero_results: '没有找到结果',
+          clear_search: '清空',
+          search: '搜索',
+        },
+      });
+    });
+  </script>
+</BaseLayout>

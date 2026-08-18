@@ -131,6 +131,7 @@ const ogImage = image ?? '/og-card.png';
           <a href={isEn ? '/en/blog/' : '/blog/'}>{isEn ? 'Blog' : '博客'}</a>
           <a href={isEn ? '/en/tools/' : '/tools/'}>{isEn ? 'Tools' : '工具'}</a>
           <a href={isEn ? '/en/about/' : '/about/'}>{isEn ? 'About' : '关于'}</a>
+          <a href="/search/" title={isEn ? 'Search' : '搜索'} style="font-size: 0.9rem; color: var(--muted); margin-left: 0.75rem;">{isEn ? 'Search' : '搜索'}</a>
           <a href={langSwitchHref} style="font-size: 0.9rem; color: var(--muted); margin-left: 1.25rem;">{isEn ? '中文' : 'EN'}</a>
         </nav>
       </div>
@@ -139,8 +140,15 @@ const ogImage = image ?? '/og-card.png';
       <slot />
     </main>
     <footer class="site-footer">
-      <div class="container">
-        © {new Date().getFullYear()} 青鸟（Qingniao）
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+        <div>© {new Date().getFullYear()} 青鸟（Qingniao）</div>
+        <div style="display: flex; gap: 1.25rem; font-size: 0.85rem;">
+          <a href={isEn ? '/rss-en.xml' : '/rss.xml'} style="color: var(--muted); display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M6.18 17.82a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36zM4 4.44v3.13c7.01 0 12.43 5.42 12.43 12.43h3.13C19.56 10.24 12.76 4.44 4 4.44zm0 6.26v3.13c4.02 0 7.14 3.12 7.14 7.14h3.13c0-5.67-4.6-10.27-10.27-10.27z"/></svg>
+            {isEn ? 'RSS' : 'RSS 订阅'}
+          </a>
+          <a href={isEn ? 'https://x.com/qingniao_dev' : 'https://x.com/qingniao_dev'} style="color: var(--muted); text-decoration: none;">X</a>
+        </div>
       </div>
     </footer>
   </body>
