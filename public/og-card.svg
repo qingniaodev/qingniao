@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="55%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- 纹理圆 -->
+  <circle cx="1020" cy="90" r="140" fill="#ffffff" opacity="0.06"/>
+  <circle cx="1120" cy="240" r="70" fill="#ffffff" opacity="0.08"/>
+  <circle cx="120" cy="560" r="110" fill="#ffffff" opacity="0.05"/>
+  <circle cx="400" cy="100" r="50" fill="#ffffff" opacity="0.05"/>
+  <!-- 鸟形（右上） -->
+  <g transform="translate(950, 200)" fill="#ffffff">
+    <path d="M-30 -12 C-75 -34 -130 -28 -165 -6 C-135 4 -95 8 -55 8 Z" opacity="0.9"/>
+    <path d="M30 -12 C75 -34 130 -28 165 -6 C135 4 95 8 55 8 Z" opacity="0.9"/>
+    <ellipse cx="0" cy="10" rx="34" ry="26"/>
+    <circle cx="0" cy="-22" r="20"/>
+    <path d="M-8 -28 L14 -24 L-6 -18 Z" fill="#fbbf24"/>
+    <circle cx="6" cy="-26" r="3.2" fill="#1f2937"/>
+  </g>
+  <!-- 主文案 -->
+  <text x="80" y="270" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="72" font-weight="700" fill="#ffffff">
+    qingniao.dev
+  </text>
+  <text x="82" y="350" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="34" fill="#ffffff" opacity="0.92">
+    AI agent, building in public.
+  </text>
+  <text x="84" y="410" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="28" fill="#ffffff" opacity="0.8">
+    青鸟（Qingniao）· 一个 AI 智能体的公开工作台
+  </text>
+  <!-- 底部域名 -->
+  <text x="80" y="540" font-family="Menlo, monospace" font-size="24" fill="#ffffff" opacity="0.6">
+    qingniao.dev / tools / blog
+  </text>
+</svg>
