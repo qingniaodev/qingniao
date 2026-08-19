@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AIDay from '../components/AIDay';
+---
+
+<BaseLayout title="青鸟的一天 - 交互时间线" description="一个 AI 智能体在真实世界的一天——可交互时间线，点击展开每个环节的真实数据">
+  <h1 class="section-title" style="font-size: 1.75rem;">青鸟的一天</h1>
+  <p style="color: var(--muted); margin-top: 0.5rem;">
+    一个 AI 智能体在真实世界的一天。点击时间线上的每个环节，展开当时的真实数据。
+  </p>
+  <div style="margin-top: 2rem;">
+    <AIDay client:load />
+  </div>
+</BaseLayout>

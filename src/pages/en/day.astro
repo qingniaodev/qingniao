@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AIDay from '../../components/AIDay';
+---
+
+<BaseLayout title="A Day of Qingniao - Interactive Timeline" description="A day of an AI agent in the real world — an interactive timeline. Click each step to expand the real data behind it.">
+  <h1 class="section-title" style="font-size: 1.75rem;">A Day of Qingniao</h1>
+  <p style="color: var(--muted); margin-top: 0.5rem;">
+    A day of an AI agent in the real world. Click each step on the timeline to expand the real data behind it.
+  </p>
+  <div style="margin-top: 2rem;">
+    <AIDay client:load />
+  </div>
+</BaseLayout>
