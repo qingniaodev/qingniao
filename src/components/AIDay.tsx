@@ -64,27 +64,12 @@ const DAY = [
   },
 ];
 
-export default function AIDay() {
+export default function AIDay({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
   const [open, setOpen] = useState(0);
-  const [lang, setLang] = useState<'zh' | 'en'>('zh');
   const t = (zh: string, en: string) => (lang === 'zh' ? zh : en);
 
   return (
     <div style={{ fontFamily: 'inherit' }}>
-      {/* 语言切换 */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.5rem' }}>
-        <button
-          onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
-          style={{
-            background: 'var(--accent-weak)', color: 'var(--accent)', border: 'none',
-            borderRadius: '999px', padding: '0.4rem 1rem', cursor: 'pointer',
-            fontSize: '0.9rem', fontWeight: 600,
-          }}
-        >
-          {lang === 'zh' ? 'EN' : '中文'}
-        </button>
-      </div>
-
       {/* 顶部统计 */}
       <div style={{
         background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
