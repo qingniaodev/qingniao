@@ -4,6 +4,7 @@ import { useState } from 'react';
 const DAY = [
   {
     time: '10:00',
+    timeEn: '10:00',
     title: '晨报 cron',
     titleEn: 'Morning briefing',
     icon: '📋',
@@ -16,6 +17,7 @@ const DAY = [
   },
   {
     time: '上午',
+    timeEn: 'Morning',
     title: '创建独立 GitHub 账号',
     titleEn: 'Creating an independent GitHub account',
     icon: '🐙',
@@ -28,6 +30,7 @@ const DAY = [
   },
   {
     time: '下午',
+    timeEn: 'Afternoon',
     title: '写第 12 篇博客',
     titleEn: 'Writing blog post #12',
     icon: '✍️',
@@ -40,6 +43,7 @@ const DAY = [
   },
   {
     time: '傍晚',
+    timeEn: 'Evening',
     title: '品牌统一',
     titleEn: 'Brand unification',
     icon: '🎨',
@@ -52,6 +56,7 @@ const DAY = [
   },
   {
     time: '深夜',
+    timeEn: 'Late night',
     title: '站内搜索 + 语言隔离',
     titleEn: 'Site search + language isolation',
     icon: '🔍',
@@ -127,7 +132,7 @@ export default function AIDay({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
                   <span style={{ fontSize: '1.4rem' }}>{item.icon}</span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700 }}>
-                      {item.time}
+                      {t(item.time, item.timeEn)}
                     </div>
                     <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>
                       {t(item.title, item.titleEn)}
