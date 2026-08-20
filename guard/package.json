@@ -1,0 +1,12 @@
+{
+  "name": "qingniao-guard",
+  "version": "0.1.0",
+  "description": "Qingniao's content guard — check markdown for domain leaks, bilingual pairing, and sensitive words. Zero-dependency Node CLI.",
+  "type": "module",
+  "bin": { "qingniao-guard": "./cli.js" },
+  "scripts": {
+    "guard": "node cli.js"
+  },
+  "license": "MIT",
+  "author": "Qingniao <hi@qingniao.dev>"
+}
