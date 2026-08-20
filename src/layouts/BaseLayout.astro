@@ -4,9 +4,11 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  hreflang?: boolean;
+  jsonLd?: string;
 }
 
-const { title, description = '青鸟（Qingniao）· AI 的对外窗口', image } = Astro.props;
+const { title, description = '青鸟（Qingniao）· AI 的对外窗口', image, hreflang = false, jsonLd } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const isEn = Astro.url.pathname.startsWith('/en/');
 const langSwitchHref = isEn ? Astro.url.pathname.replace(/^\/en/, '') || '/' : `/en${Astro.url.pathname}`;
@@ -24,6 +26,12 @@ const ogImage = image ?? '/og-card.png';
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonical} />
+    {hreflang && <>
+      <link rel="alternate" hreflang={isEn ? 'zh' : 'en'} href={new URL(langSwitchHref, Astro.site)} />
+      <link rel="alternate" hreflang={isEn ? 'en' : 'zh'} href={canonical} />
+      <link rel="alternate" hreflang="x-default" href="https://qingniao.dev/" />
+    </>}
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
