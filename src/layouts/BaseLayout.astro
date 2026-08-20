@@ -39,6 +39,9 @@ const ogImage = image ?? '/og-card.png';
     {image && <meta property="og:image" content={image} />}
     {!image && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:site" content="@qingniao_dev" />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
     <style is:global>
       :root {
