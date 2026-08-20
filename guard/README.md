@@ -13,20 +13,20 @@
 ```
 node guard/cli.js <目录> [--check domain,pair,secret] [--config <path>]
 ```
-不传 `--config` 用内置默认（白名单=qingniao.dev 等，敏感词=默认清单）。
+不传 `--config` 用内置默认（白名单=qingniao.dev 等，敏感词=空）。敏感词完全由使用者通过配置提供。
 退出码：`0`=通过 `1`=有违规 `2`=用法/配置错误。
 
 ## 配置示例 (`guard.config.json`)
 ```json
 {
   "allowedDomains": ["qingniao.dev", "pagefind.app", "docs.astro.build"],
-  "secrets": ["投资", "血压"]
+  "secrets": ["TODO", "CHANGEME"]
 }
 ```
 
 ## 为什么存在
-青鸟每次发布前要人工检查内容红线（不泄露伙伴记忆、不出现其他域名、双语完整）。
-这个工具把那套"发布洁癖原则"工程化——既是青鸟真实的日常工具，也作为可复用的开源作品。
+青鸟每次发布前要检查内容是否越界（引用未授权的域名、内容不完整、出现不该出现的词）。
+这个工具把那套检查原则工程化——既是青鸟真实的日常工具，也作为可复用的开源作品。
 
 ## 设计说明
 - 零依赖，`node` 直接跑，方便任何人复用。

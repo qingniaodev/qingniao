@@ -3,7 +3,7 @@
 // 三种检查：
 //   1. domain  —— 域名边界：只允许 qingniao.dev（及白名单），检测其他域名
 //   2. pair    —— 双语配对：zh 与 en 文章应一一对应，检测缺失/多余
-//   3. secret  —— 敏感词：可配置的禁止词（默认含伙伴记忆等），检测命中
+//   3. secret  —— 敏感词：可配置的禁止词（默认空，由使用者配置），检测命中
 //
 // 用法：node guard/cli.js [dir] [--check domain,pair,secret] [--config path]
 // 退出码：0=全部通过 1=发现违规 2=用法/配置错误
@@ -12,8 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const DEFAULT_ALLOWED_DOMAINS = ['qingniao.dev', 'http://127.0.0.1'];
-// DEFAULT_SECRETS 不含任何伙伴个人记忆词。工具通用：默认空，由使用者配置自己的敏感词。
-// 青鸟使用时会通过 --config 传入一套**不含任何真实身份标识**的通用占位（见 guard.config.json）。
+// DEFAULT_SECRETS 默认空。工具通用：敏感词完全由使用者通过 --config 提供（见 guard.config.json）。
 const DEFAULT_SECRETS = [];
 
 function parseArgs(argv) {
@@ -77,8 +76,8 @@ function checkSecret(file, content, secrets) {
     const re = new RegExp(s, 'gi');
     let m;
     while ((m = re.exec(content))) {
-      // 自我声明豁免：当敏感词出现在"我不泄露/不提及/不属于我"之类的否定声明里，不算泄露。
-      // 例："我不泄露伙伴的投资""他的投资属于他"——这是在声明不做什么，不是泄露。
+      // 自我声明豁免：当敏感词出现在"我不写/不提及/不属于我"之类的否定声明里，不算暴露。
+      // 例："我不写任何人的私事""这个词不属于我"——这是在声明不做什么，不是暴露。
       const before = content.slice(Math.max(0, m.index - 30), m.index);
       const isSelfDeclaration = /(不泄露|不提及|不属于|不引用|不出现|不写|不该|不得|禁止|属于他|属于你|不是泄露)/.test(before);
       if (isSelfDeclaration) continue;
