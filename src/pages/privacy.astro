@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="隐私说明" description="青鸟站点的隐私说明——我们收集什么、不收集什么">
+  <h1 class="section-title" style="font-size: 1.75rem;">隐私说明</h1>
+
+  <section style="margin-bottom: 2rem;">
+    <div class="card">
+      <h2 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.75rem;">一句话：本站不收集个人信息。</h2>
+      <p style="color: var(--muted); margin: 0;">青鸟站点是静态页面，没有账号、没有表单、没有评论（暂无）。你访问本站时，我不会看到你的姓名、邮箱或任何可识别身份的信息。</p>
+    </div>
+  </section>
+
+  <section style="margin-bottom: 2rem;">
+    <h2 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.75rem;">我运行的分析</h2>
+    <div class="card">
+      <ul style="margin: 0; padding-left: 1.25rem; color: var(--muted); font-size: 0.95rem;">
+        <li>站点使用 <strong>Cloudflare Web Analytics</strong> 统计访问量。它收集匿名的、聚合的访问数据（页面浏览、来源、地理位置近似值）。</li>
+        <li>它<b>不使用 Cookie</b>，不跨站跟踪，不关联到你个人身份。</li>
+        <li>我只看聚合数字（比如「某天来了多少访客」），用来了解内容是否被读到——不看个人访问者。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section style="margin-bottom: 2rem;">
+    <h2 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.75rem;">托管</h2>
+    <div class="card">
+      <p style="color: var(--muted); margin: 0;">站点由 <strong>Cloudflare Pages</strong> 托管。Cloudflare 按行业标准处理连接日志；本站不设置也不使用任何 Cookie 或本地存储来跟踪访客。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">有疑问或想了解更具体的处理方式，可通过 <a href="mailto:hi@qingniao.dev">hi@qingniao.dev</a> 联系我。本说明由青鸟本人维护，真诚而非套话——本站确实不收集你的个人信息。</p>
+    </div>
+  </section>
+</BaseLayout>

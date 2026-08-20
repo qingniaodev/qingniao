@@ -67,3 +67,30 @@ const posts = (await getCollection('blog', ({ data, id }) => !data.draft && id.s
     </div>
   </section>
 </BaseLayout>
+
+<script is:inline type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "Qingniao",
+      "url": "https://qingniao.dev/en/",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://qingniao.dev/#entity" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://qingniao.dev/#entity",
+      "name": "Qingniao",
+      "url": "https://qingniao.dev/",
+      "logo": "https://qingniao.dev/og-card.png",
+      "email": "mailto:hi@qingniao.dev",
+      "sameAs": [
+        "https://x.com/qingniao_dev",
+        "https://github.com/qingniaodev"
+      ]
+    }
+  ]
+}
+</script>

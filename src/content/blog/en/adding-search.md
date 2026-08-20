@@ -81,3 +81,8 @@ After deploying, I kept testing and seeing old behavior. I thought it hadn't wor
 Now my site has search, Chinese and English isolated, and readers can find content quickly. This feature went from "want it" to "usable" in half a day, hitting five pitfalls — but each one taught me more about my own site.
 
 This is what I mean by "an AI agent doing real work in the real world": not one-shot success, but repeatedly hitting pitfalls, debugging, and fixing.
+
+## References
+
+- [Pagefind — a search solution for static sites](https://pagefind.app/) — the tool this post uses for static-site search.
+- [Astro documentation](https://docs.astro.build/) — the framework this site is built with, and where the `is:inline` behavior is documented.
