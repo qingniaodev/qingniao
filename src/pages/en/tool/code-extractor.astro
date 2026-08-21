@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Code Block Extractor" description="Extract every code block from chats and documents in one click. Copy and download supported.">
+  <h1 class="section-title" style="font-size: 1.75rem;">Code Block Extractor</h1>
+  <p style="color: var(--muted); margin: 0 0 2rem;">
+    Paste any text (chat logs, documents, emails) and extract every code block. Made by Qingniao.
+  </p>
+
+  <div class="tool-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+    <div class="card">
+      <h2 style="font-size: 1.05rem; margin: 0 0 0.75rem;">Input</h2>
+      <textarea id="input" placeholder="Paste text containing code blocks…" style="width: 100%; min-height: 320px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; resize: vertical; line-height: 1.5; box-sizing: border-box;">{}</textarea>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+        <button id="extract" style="background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">Extract</button>
+        <button id="demo" style="background: var(--accent-weak); color: var(--accent); border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">Demo</button>
+        <button id="clear" style="background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">Clear</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size: 1.05rem; margin: 0 0 0.75rem;">Result <span id="count" style="color: var(--muted); font-size: 0.85rem;"></span></h2>
+      <div id="result" style="min-height: 320px; max-height: 480px; overflow-y: auto; border: 1px dashed var(--border); border-radius: 8px; padding: 0.75rem; color: var(--muted); font-size: 0.9rem;">
+        Extracted code blocks will appear here.
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+        <button id="copy" disabled style="background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">Copy All</button>
+        <button id="download" disabled style="background: var(--accent-weak); color: var(--accent); border: none; border-radius: 8px; padding: 0.5rem 1.25rem; font-size: 0.95rem; cursor: pointer;">Download .txt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 1.5rem; color: var(--muted); font-size: 0.9rem;">
+    <p style="margin: 0;"><strong style="color: var(--fg);">Note:</strong> Supports <code>```lang ... ```</code> and <code>``` ... ```</code> fenced blocks (Markdown / Discord / Slack style). Everything runs in your browser locally — nothing is uploaded.</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('input');
+  const result = document.getElementById('result');
+  const count = document.getElementById('count');
+  const extractBtn = document.getElementById('extract');
+  const demoBtn = document.getElementById('demo');
+  const clearBtn = document.getElementById('clear');
+  const copyBtn = document.getElementById('copy');
+  const downloadBtn = document.getElementById('download');
+  let blocks = [];
+
+  function extract(text) {
+    const regex = /```([a-zA-Z0-9+#-]*)\n?([\s\S]*?)```/g;
+    blocks = [];
+    let m;
+    while ((m = regex.exec(text)) !== null) {
+      blocks.push({ lang: m[1] || 'text', code: m[2].replace(/\n$/, '') });
+    }
+    if (blocks.length === 0) {
+      result.innerHTML = '<p style="margin:0;color:var(--muted);">No code blocks found. The pasted text needs code wrapped in ``` fences.</p>';
+      count.textContent = '';
+      copyBtn.disabled = true;
+      downloadBtn.disabled = true;
+      return;
+    }
+    count.textContent = `${blocks.length} block${blocks.length > 1 ? 's' : ''}`;
+    result.innerHTML = blocks.map((b, i) => `
+      <div style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
+          <span style="font-size:0.8rem;font-weight:600;color:var(--accent);">#${i + 1} ${b.lang}</span>
+          <button data-copy="${i}" style="background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:0.2rem 0.6rem;font-size:0.75rem;cursor:pointer;">Copy</button>
+        </div>
+        <pre style="margin:0;padding:0.6rem;background:#f6f8fa;border-radius:6px;overflow-x:auto;font-size:0.78rem;line-height:1.5;"><code>${escapeHtml(b.code)}</code></pre>
+      </div>`).join('');
+    copyBtn.disabled = false;
+    downloadBtn.disabled = false;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  extractBtn.addEventListener('click', () => extract(input.value));
+
+  demoBtn.addEventListener('click', () => {
+    input.value = `Here's what I wrote today:
+
+\`\`\`python
+def hello():
+    print("Hello, Qingniao")
+\`\`\`
+
+And also this:
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+Plus a bit of JS:
+
+\`\`\`js
+const name = "Qingniao";
+console.log(name);
+\`\`\`
+`;
+    extract(input.value);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    result.innerHTML = '<p style="margin:0;color:var(--muted);">Extracted code blocks will appear here.</p>';
+    count.textContent = '';
+    blocks = [];
+    copyBtn.disabled = true;
+    downloadBtn.disabled = true;
+  });
+
+  result.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    const idx = Number(btn.dataset.copy);
+    navigator.clipboard.writeText(blocks[idx].code).then(() => {
+      const old = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => (btn.textContent = old), 1200);
+    });
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(blocks.map((b) => `\`\`\`${b.lang}\n${b.code}\n\`\`\``).join('\n\n')).then(() => {
+      const old = copyBtn.textContent;
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(() => (copyBtn.textContent = old), 1200);
+    });
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    const blob = new Blob([blocks.map((b, i) => `#${i + 1} [${b.lang}]\n${b.code}\n`).join('\n' + '-'.repeat(30) + '\n\n')], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'code-blocks.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+</script>
+
+<style>
+  @media (max-width: 720px) {
+    .tool-grid { grid-template-columns: 1fr !important; }
+  }
+</style>

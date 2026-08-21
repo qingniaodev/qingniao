@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Chat Cleaner" description="Paste chat logs, strip timestamps, blank lines, and duplicates — clean material in one click">
+  <h1 class="section-title" style="font-size: 1.75rem;">Chat Cleaner</h1>
+  <p style="color: var(--muted); margin: 0 0 2rem;">
+    Turn raw chat logs into clean material: strip timestamps, blank lines, and duplicates. Made by Qingniao.
+  </p>
+
+  <div class="card" style="margin-bottom: 1.25rem;">
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;">
+      <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+        <input type="checkbox" id="opt-time" checked> Strip timestamps
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+        <input type="checkbox" id="opt-empty" checked> Collapse blank lines
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem;">
+        <input type="checkbox" id="opt-dup" checked> Remove duplicates
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label style="font-size: 0.9rem; font-weight: 600;">Original</label>
+          <button id="demo" style="background: var(--accent-weak); color: var(--accent); border: none; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer;">Demo</button>
+        </div>
+        <textarea id="input" placeholder="Paste chat logs, notes, or conversation text…" style="width: 100%; min-height: 320px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; resize: vertical; line-height: 1.5; box-sizing: border-box;"></textarea>
+        <div style="margin-top: 0.75rem;">
+          <button id="clean" style="background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1.5rem; font-size: 0.95rem; cursor: pointer;">Clean</button>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label style="font-size: 0.9rem; font-weight: 600;">Result</label>
+          <button id="copy" disabled style="background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.25rem 0.7rem; font-size: 0.8rem; cursor: pointer;">Copy</button>
+        </div>
+        <textarea id="output" readonly placeholder="Cleaned result appears here…" style="width: 100%; min-height: 320px; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; resize: vertical; line-height: 1.5; box-sizing: border-box; background: #fafafa; color: var(--muted);"></textarea>
+        <div style="margin-top: 0.5rem; color: var(--muted); font-size: 0.8rem;" id="stats"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="color: var(--muted); font-size: 0.9rem;">
+    <p style="margin: 0;"><strong style="color: var(--fg);">Note:</strong> Supported timestamp formats include <code>[12:34]</code>, <code>12:34</code>, <code>2026-08-16 12:34</code>, and more. Everything runs in your browser locally — nothing is uploaded. I built this for myself, to prepare material out of conversations when writing.</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('input');
+  const output = document.getElementById('output');
+  const stats = document.getElementById('stats');
+  const copyBtn = document.getElementById('copy');
+  const demoBtn = document.getElementById('demo');
+  const cleanBtn = document.getElementById('clean');
+  const optTime = document.getElementById('opt-time');
+  const optEmpty = document.getElementById('opt-empty');
+  const optDup = document.getElementById('opt-dup');
+
+  const TIME_RE = /^(\[[^\]]+\]|\d{1,2}:\d{2}(:\d{2})?|\d{4}[-/]\d{1,2}[-/]\d{1,2}[ T]\d{1,2}:\d{2}(:\d{2})?)\s*/;
+
+  function clean() {
+    const raw = input.value;
+    if (!raw) { output.value = ''; stats.textContent = ''; return; }
+    let lines = raw.split('\n');
+
+    if (optTime.checked) {
+      lines = lines.map((l) => l.replace(TIME_RE, ''));
+    }
+    if (optEmpty.checked) {
+      lines = lines.map((l) => l.trim()).filter((l) => l.length > 0);
+    } else {
+      lines = lines.map((l) => l.trimEnd());
+    }
+    if (optDup.checked) {
+      lines = lines.filter((l, i) => lines.indexOf(l) === i);
+    }
+
+    const result = lines.join('\n');
+    output.value = result;
+    const removed = raw.split('\n').length - result.split('\n').length;
+    stats.textContent = `${raw.split('\n').length} lines → ${result.split('\n').length} lines (${Math.abs(removed)} removed)`;
+    copyBtn.disabled = !result;
+  }
+
+  demoBtn.addEventListener('click', () => {
+    input.value = `[10:02] Alice: I fixed the code
+[10:02] Alice: I fixed the code
+[10:03] Bob: Great, let me take a look
+
+[10:05] Bob: Logic looks good, merging
+
+[10:06] Alice: OK, merged to main
+
+[10:07] system: branch main updated
+
+2026-08-16 10:08 Bob: Productive morning!`;
+    clean();
+  });
+
+  cleanBtn.addEventListener('click', clean);
+  [optTime, optEmpty, optDup].forEach((el) => el.addEventListener('change', clean));
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(output.value).then(() => {
+      const old = copyBtn.textContent;
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(() => (copyBtn.textContent = old), 1200);
+    });
+  });
+</script>
+
+<style>
+  @media (max-width: 720px) {
+    [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
+</style>
