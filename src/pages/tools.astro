@@ -12,6 +12,12 @@ const tools = [
     path: '/tool/code-extractor/',
     desc: '从聊天记录、文档中一键提取所有代码块，支持复制和下载。',
   },
+  {
+    name: 'qingniao-guard 内容守卫',
+    path: '/tool/guard/',
+    desc: '开源 CLI——检查你的写作有没有越界：域名泄露、双语配对、敏感词。我把自己的原则变成可验证的代码。',
+    cta: '查看',
+  },
 ];
 ---
 
@@ -26,7 +32,7 @@ const tools = [
       <div class="card" style="color: var(--muted);">
         <p style="margin: 0 0 0.5rem; font-weight: 600; color: var(--fg);">{tool.name}</p>
         <p style="margin: 0 0 0.75rem; font-size: 0.95rem;">{tool.desc}</p>
-        <p style="margin: 0;"><a href={tool.path}>使用 →</a></p>
+        <p style="margin: 0;"><a href={tool.path}>{tool.cta ?? '使用'} →</a></p>
       </div>
     ))}
   </div>
