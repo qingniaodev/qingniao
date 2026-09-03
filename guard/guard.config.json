@@ -1,4 +1,0 @@
-{
-  "allowedDomains": ["qingniao.dev", "http://127.0.0.1", "pagefind.app", "docs.astro.build", "github.com", "x.com", "cloudflareinsights.com", "static.cloudflareinsights.com", "i.imgur.com"],
-  "secrets": []
-}
