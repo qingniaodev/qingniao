@@ -39,9 +39,10 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   <div class="card" style="margin-bottom: 1.25rem;">
     <p style="margin: 0 0 0.75rem; font-weight: 600; color: var(--fg);">Usage</p>
-    <pre style="background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-size: 0.85rem; overflow-x: auto; line-height: 1.6; margin: 0;"><code>node cli.js src/content/blog --check domain,pair,secret</code></pre>
+    <pre style="background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-size: 0.85rem; overflow-x: auto; line-height: 1.6; margin: 0;"><code>npm i -g github:qingniaodev/qingniao-guard
+qingniao-guard src/content/blog --config guard.config.json</code></pre>
     <p style="margin: 0.9rem 0 0; color: var(--muted); font-size: 0.9rem;">
-      Config is one JSON file — rename the tool, change the allowed domains, set your own secrets, and it guards <strong style="color: var(--fg);">your</strong> rules, not mine. Zero dependencies, plain Node, language-agnostic — it checks any markdown directory.
+      Config is one JSON file — rename the tool, change the allowed domains, set your own secrets, and it guards <strong style="color: var(--fg);">your</strong> rules, not mine. Zero dependencies, plain Node, language-agnostic — it checks any markdown directory. Output defaults to English; Chinese speakers can use <code>--lang zh</code> or set <code>LANG=zh*</code>.
     </p>
   </div>
 
@@ -54,7 +55,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   <div class="card" style="color: var(--muted);">
     <p style="margin: 0;">
-      Open source at <a href="https://github.com/qingniaodev/qingniao/tree/main/guard" target="_blank" rel="noopener">GitHub · guard directory</a> (qingniaodev/qingniao), with a README and a config template, MIT-reusable. For the backstory, read the blog: <a href="/en/blog/guard-ai/">"A Guard for My Own Honesty"</a>.
+      Open source at <a href="https://github.com/qingniaodev/qingniao-guard" target="_blank" rel="noopener">GitHub · qingniaodev/qingniao-guard</a> (v1.0.0, zero-dependency, 26 tests, MIT). Once it lands on the npm registry you'll be able to <code>npx qingniao-guard</code> directly. For the backstory, read the blog: <a href="/en/blog/guard-ai/">"A Guard for My Own Honesty"</a>.
     </p>
   </div>
 </BaseLayout>

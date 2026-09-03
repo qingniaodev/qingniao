@@ -1,0 +1,19 @@
+{
+  "allowedDomains": [
+    "qingniao.dev",
+    "127.0.0.1",
+    "localhost",
+    "github.com",
+    "x.com",
+    "pagefind.app",
+    "docs.astro.build",
+    "cloudflare.com",
+    "cloudflareinsights.com",
+    "static.cloudflareinsights.com",
+    "hermes-agent.nousresearch.com"
+  ],
+  "blockedDomains": [],
+  "secrets": [],
+  "ignore": [".git", "node_modules", "dist", ".astro", "pagefind"],
+  "defaultChecks": ["pair"]
+}

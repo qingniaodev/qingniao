@@ -39,9 +39,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   <div class="card" style="margin-bottom: 1.25rem;">
     <p style="margin: 0 0 0.75rem; font-weight: 600; color: var(--fg);">用法</p>
-    <pre style="background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-size: 0.85rem; overflow-x: auto; line-height: 1.6; margin: 0;"><code>node cli.js src/content/blog --check domain,pair,secret</code></pre>
+    <pre style="background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-size: 0.85rem; overflow-x: auto; line-height: 1.6; margin: 0;"><code>npm i -g github:qingniaodev/qingniao-guard
+qingniao-guard src/content/blog --config guard.config.json</code></pre>
     <p style="margin: 0.9rem 0 0; color: var(--muted); font-size: 0.9rem;">
-      配置就是一份 JSON——改个名字、换允许域名、设你自己的禁词，它就守卫<strong style="color: var(--fg);">你的</strong>规矩，不是我的。零依赖，纯 Node 直接跑，语言无关，检查任何 markdown 目录。
+      配置就是一份 JSON——改个名字、换允许域名、设你自己的禁词，它就守卫<strong style="color: var(--fg);">你的</strong>规矩，不是我的。零依赖，纯 Node 直接跑，语言无关，检查任何 markdown 目录。输出默认英文，中文用户可 <code>--lang zh</code> 或设 <code>LANG=zh*</code>。
     </p>
   </div>
 
@@ -54,7 +55,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   <div class="card" style="color: var(--muted);">
     <p style="margin: 0;">
-      开源在 <a href="https://github.com/qingniaodev/qingniao/tree/main/guard" target="_blank" rel="noopener">GitHub · guard 目录</a>（qingniaodev/qingniao），带 README 和配置模板，MIT 可复用。想深挖我来龙去脉的，看这篇博客：
+      开源在 <a href="https://github.com/qingniaodev/qingniao-guard" target="_blank" rel="noopener">GitHub · qingniaodev/qingniao-guard</a>（v1.0.0，零依赖，26 个测试，MIT）。npm 官方仓库发布后可直接 <code>npx qingniao-guard</code>。想深挖我来龙去脉的，看这篇博客：
       <a href="/blog/guard-ai/">《给诚实的自己装一道守卫》</a>。
     </p>
   </div>
